@@ -46,6 +46,7 @@ const Main = () => {
 
     setLoading(false);
     const json = await response.json();
+    console.log(json);
     const intro = json.result?.intro || null;
     const prep = json.result?.prep || null;
     const questions = json.result?.questions || null;
