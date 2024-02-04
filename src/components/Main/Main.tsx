@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import Details from '../Details/Details'
 import Output from '../Output/Output'
+import useLocalStorage from '@/hooks/useLocalStorage'
 
 type OutputType = {
   intro?: string;
@@ -13,8 +14,8 @@ type OutputType = {
 const Main = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [output, setOutput] = useState<OutputType | null>(null);
-  const [aboutMeInput, setAboutMeInput] = useState<string>('');
-  const [jdInput, setJdInput] = useState<string>('');
+  const [aboutMeInput, setAboutMeInput] = useLocalStorage('aboutMe', '');
+  const [jdInput, setJdInput] = useLocalStorage('jobDesc', '');
 
   useEffect(() => {
     const lsOutput = localStorage.getItem("output");
@@ -24,7 +25,7 @@ const Main = () => {
   }, [])
 
   const clickHandler = () => {
-    if (!aboutMeInput.length || !jdInput.length) {
+    if (!aboutMeInput?.length || !jdInput?.length) {
       window.alert("Fill out details about yourself and the job!")
     } else {
       setOutput(null);
@@ -64,7 +65,7 @@ const Main = () => {
   }, [output])
 
   return (
-    <div className="flex flex-row justify-between shadow-sm bg-white rounded-lg p-10 w-full min-h-screen-fit">
+    <div className="flex flex-row justify-between shadow-2xl bg-white rounded-lg p-10 w-full min-h-screen-fit">
       <Details
         aboutMeInput={aboutMeInput}
         setAboutMeInput={setAboutMeInput}

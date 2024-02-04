@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-const OpenAI = require("openai");
 
+const OpenAI = require("openai");
 const openai = new OpenAI({ key: process.env.OPENAI_API_KEY });
 
 interface Output {
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest, res: any) {
       ],
       model: "gpt-3.5-turbo",
     });
-    output["intro"] = intro.choices[0].message.content
+    if (intro) output["intro"] = intro.choices[0].message.content
 
     const prepMaterial = await openai.chat.completions.create({
       messages: [
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest, res: any) {
       ],
       model: "gpt-3.5-turbo"
     })
-    output["prep"] = prepMaterial.choices[0].message.content;
+    if (prepMaterial) output["prep"] = prepMaterial.choices[0].message.content;
 
     const questions = await openai.chat.completions.create({
       messages: [
@@ -78,7 +78,7 @@ export async function POST(req: NextRequest, res: any) {
       ],
       model: "gpt-3.5-turbo"
     })
-    output["questions"] = questions.choices[0].message.content;
+    if (questions) output["questions"] = questions.choices[0].message.content;
 
     const links = await openai.chat.completions.create({
       messages: [
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest, res: any) {
       ],
       model: "gpt-3.5-turbo"
     })
-    output["links"] = links.choices[0].message.content;
+    if (links) output["links"] = links.choices[0].message.content;
 
     return NextResponse.json({ result: output }, { status: 200 });
   } catch (error) {
@@ -114,6 +114,7 @@ export async function POST(req: NextRequest, res: any) {
     }, { status: 500 })
   }
 }
+
 class OpenAIError extends Error {
   constructor(message: string) {
     super(message);

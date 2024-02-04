@@ -6,7 +6,7 @@ import { FileUploader } from "react-drag-drop-files";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 type Props = {
-  input: string;
+  input: string | null;
   setInput: (input: string) => void;
   title: string;
   buttonText: string;
@@ -63,7 +63,7 @@ const InputSection = ({ input, setInput, title, buttonText, placeholder }: Props
       <textarea
         className="mt-3 text-xs w-full h-40 p-4 border rounded-md resize-none mb-5"
         placeholder={placeholder}
-        value={input}
+        value={input || ""}
         onChange={(e) => setInput(e.target.value)}
       />
     </div>

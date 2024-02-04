@@ -1,9 +1,9 @@
 import InputSection from './InputSection';
 
 type Props = {
-  aboutMeInput: string;
+  aboutMeInput: string | null;
   setAboutMeInput: (input: string) => void;
-  jdInput: string;
+  jdInput: string | null;
   setJdInput: (input: string) => void;
   clickHandler: () => void;
 }
@@ -11,9 +11,9 @@ type Props = {
 const Details = ({ aboutMeInput, setAboutMeInput, jdInput, setJdInput, clickHandler }: Props) => {
 
   return (
-    <div className="flex w-2/5 border-r-2 flex-col pr-10">
+    <div className="flex w-2/5 border-r-2 flex-col">
       <h2 className="text-2xl mb-5">Details</h2>
-      <div className="flex flex-col overflow-scroll mb-3">
+      <div className="flex flex-col overflow-scroll pr-10 mb-3">
         <InputSection
           input={aboutMeInput}
           setInput={setAboutMeInput}
@@ -29,7 +29,7 @@ const Details = ({ aboutMeInput, setAboutMeInput, jdInput, setJdInput, clickHand
           placeholder="Paste in job description here or import PDF above" />
       </div>
       <button
-        className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded text-center active:translate-y-0.5"
+        className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded text-center active:translate-y-0.1 mr-10"
         onClick={clickHandler}>
         Generate
       </button>
