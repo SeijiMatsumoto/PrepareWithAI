@@ -73,6 +73,7 @@ const Main = () => {
     const data = json.result || null;
     if (data) setQuestions(data);
     else setQuestions("");
+    getLinks();
   }
 
   const getLinks = async () => {
@@ -89,7 +90,6 @@ const Main = () => {
     console.log('Links:', json);
     const data = json.result || null;
     if (data) setLinks(data);
-    getLinks();
   }
 
   const getData = () => {
