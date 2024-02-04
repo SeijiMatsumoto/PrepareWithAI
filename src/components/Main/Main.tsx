@@ -28,14 +28,12 @@ const Main = () => {
     if (!aboutMeInput?.length || !jdInput?.length) {
       window.alert("Fill out details about yourself and the job!")
     } else {
-      setOutput(null);
       getData();
     }
   }
 
-  const getData = async () => {
-    setLoading(true);
-    const response = await fetch("/api/openai", {
+  const getIntro = async () => {
+    const response = await fetch("/api/openai/intro", {
       method: "POST",
       headers: {
         "Accept": "application/json",
@@ -47,17 +45,65 @@ const Main = () => {
     setLoading(false);
     const json = await response.json();
     console.log(json);
-    const intro = json.result?.intro || null;
-    const prep = json.result?.prep || null;
-    const questions = json.result?.questions || null;
-    const links = json.result?.links || null;
+    const data = json.result || null;
+  }
 
-    setOutput({
-      intro,
-      prep,
-      questions,
-      links
+  const getPrep = async () => {
+    const response = await fetch("/api/openai/prep", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ jd: jdInput })
     })
+
+    setLoading(false);
+    const json = await response.json();
+    console.log(json);
+    const data = json.result || null;
+  }
+
+  const getQuestions = async () => {
+    const response = await fetch("/api/openai/questions", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ jd: jdInput })
+    })
+
+    setLoading(false);
+    const json = await response.json();
+    console.log(json);
+    const data = json.result || null;
+  }
+
+  const getResources = async () => {
+    const response = await fetch("/api/openai/resources", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ jd: jdInput })
+    })
+
+    setLoading(false);
+    const json = await response.json();
+    console.log(json);
+    const data = json.result || null;
+  }
+
+  const getData = () => {
+    setLoading(true);
+    setOutput(null);
+
+    getIntro();
+    getPrep();
+    getQuestions();
+    getResources();
   }
 
   useEffect(() => {
