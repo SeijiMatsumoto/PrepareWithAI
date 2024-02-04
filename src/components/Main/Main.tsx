@@ -35,6 +35,7 @@ const Main = () => {
     const json = await response.json();
     const data = json.result || null;
     if (data) setIntro(data)
+    getPrep();
   }
 
   const getPrep = async () => {
@@ -50,6 +51,7 @@ const Main = () => {
     const json = await response.json();
     const data = json.result || null;
     if (data) setPrep(data);
+    getQuestions();
   }
 
   const getQuestions = async () => {
@@ -80,6 +82,7 @@ const Main = () => {
     const json = await response.json();
     const data = json.result || null;
     if (data) setLinks(data);
+    getLinks();
   }
 
   const getData = () => {
@@ -90,9 +93,6 @@ const Main = () => {
     setLinks(null);
 
     getIntro();
-    getPrep();
-    getQuestions();
-    getLinks();
   }
 
   useEffect(() => {
