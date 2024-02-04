@@ -33,6 +33,7 @@ const Main = () => {
     })
 
     const json = await response.json();
+    console.log("Intro:", json)
     const data = json.result || null;
     if (data) setIntro(data)
     getPrep();
@@ -49,6 +50,7 @@ const Main = () => {
     })
 
     const json = await response.json();
+    console.log('Prep:', json);
     const data = json.result || null;
     if (data) setPrep(data);
     getQuestions();
@@ -65,6 +67,7 @@ const Main = () => {
     })
 
     const json = await response.json();
+    console.log("Questions:", json)
     const data = json.result || null;
     if (data) setQuestions(data);
   }
@@ -80,6 +83,7 @@ const Main = () => {
     })
 
     const json = await response.json();
+    console.log('Links:', json);
     const data = json.result || null;
     if (data) setLinks(data);
     getLinks();

@@ -30,10 +30,9 @@ const Output = ({ output, loading }: Props) => {
   }
 
   const exportPdf = () => {
-    const date = new Date();
     const report: any = new JsPDF('portrait', 'pt', 'a4');
     report.html(document.querySelector('#preparation')).then(() => {
-      report.save(`prepareWithAiMaterial_${date.getDate()}.pdf`);
+      report.save('prepareWithAiMaterial.pdf');
     }).catch((err: Error) => console.error(err))
   }
 
