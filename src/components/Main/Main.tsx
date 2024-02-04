@@ -16,6 +16,13 @@ const Main = () => {
   const [aboutMeInput, setAboutMeInput] = useState<string>('');
   const [jdInput, setJdInput] = useState<string>('');
 
+  useEffect(() => {
+    const lsOutput = localStorage.getItem("output");
+    if (lsOutput) {
+      setOutput(JSON.parse(lsOutput));
+    }
+  }, [])
+
   const clickHandler = () => {
     if (!aboutMeInput.length || !jdInput.length) {
       window.alert("Fill out details about yourself and the job!")
@@ -43,7 +50,6 @@ const Main = () => {
     const questions = json.result.questions;
     const links = json.result.links;
 
-    console.log(json, intro, prep, questions, links);
     setOutput({
       intro,
       prep,
@@ -53,11 +59,12 @@ const Main = () => {
   }
 
   useEffect(() => {
-    console.log("Loading:", loading)
-  }, [loading])
+    if (output) localStorage.setItem("output", JSON.stringify(output));
+    else localStorage.removeItem("output");
+  }, [output])
 
   return (
-    <div className="flex flex-row justify-between shadow-sm bg-white rounded-lg p-10 w-full h-full">
+    <div className="flex flex-row justify-between shadow-sm bg-white rounded-lg p-10 w-full min-h-screen-fit">
       <Details
         aboutMeInput={aboutMeInput}
         setAboutMeInput={setAboutMeInput}

@@ -38,7 +38,7 @@ export async function POST(req: NextRequest, res: any) {
         {
           role: "user",
           content:
-            `Give me an introduction that I can say for a job interview in one paragraph. Write in a way that is natural for verbally saying it to an interviewer in person. Make the introduction relevant to the job description.
+            `Give me an introduction that I can say for a job interview in one paragraph. Write in a way that is natural for verbally saying it to an interviewer in person. Make the introduction relevant to the job description and keep it short - about 2-4 sentences.
             Here's some information about me: ${me}.
             Here is the job description: ${jd}`,
         },
@@ -89,7 +89,7 @@ export async function POST(req: NextRequest, res: any) {
         {
           role: "user",
           content:
-            `Give me links for resources that can help me prepare for this job, such as documentation and guides. I need them in an unordered list with bullets and <a> tags
+            `Give me links for resources that can help me prepare for this job, such as documentation on technical stuff, advice for interviews, and other interview prep links. I need them in an unordered list with bullets and <a> tags
             Here is the job description: ${jd}`,
         },
       ],

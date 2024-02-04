@@ -1,5 +1,6 @@
 import React from 'react'
-import { GridLoader } from 'react-spinners';
+import NoOutput from './NoOutput';
+import JsPDF from 'jspdf';
 
 type Props = {
   output: Output | null;
@@ -19,44 +20,42 @@ const Output = ({ output, loading }: Props) => {
     return input.replace(/\n/g, '<br>');
   }
 
+  const Section = (title: string, content: string) => {
+    return (
+      <div className="mb-5">
+        <h2 className="text-lg weight-400 underline uppercase">{title}</h2>
+        <div dangerouslySetInnerHTML={{ __html: title === "Resources" ? content : sanitize(content) }} />
+      </div>
+    )
+  }
+
+  const exportPdf = () => {
+    const date = new Date();
+    const report: any = new JsPDF('portrait', 'pt', 'a4');
+    report.html(document.querySelector('#preparation')).then(() => {
+      report.save(`prepareWithAiMaterial_${date.getDate()}.pdf`);
+    }).catch((err: Error) => console.error(err))
+  }
+
   return (
-    <div className="flex flex-col w-3/5 pl-10 align-top">
-      <h2 className="text-xl mb-5">Interview Preparation Guide</h2>
+    <div className="flex flex-col w-3/5 pl-10">
+      <div className="flex justify-between w-full flex-row mb-2">
+        <h2 className="text-2xl mb-5">Interview Preparation Guide</h2>
+        {output !== null ? <button
+          className="flex flex-row shadow-md rounded-md bg-slate-50 items-center justify-center text-center p-2 transition duration-200 hover:bg-slate-100 cursor-pointer active:bg-slate-200"
+          onClick={exportPdf}
+        >
+          <span>Export as PDF</span>
+        </button> : null}
+      </div>
       {output ?
-        <div>
-          {output.intro &&
-            <div className="mb-5">
-              <h2 className="text-lg weight-400 underline uppercase">Introduction</h2>
-              <div dangerouslySetInnerHTML={{ __html: sanitize(output.intro) }} />
-            </div>
-          }
-          {output.prep &&
-            <div className="mb-5">
-              <h2 className="text-lg weight-400 underline uppercase">Preparation</h2>
-              <div dangerouslySetInnerHTML={{ __html: sanitize(output.prep) }} />
-            </div>
-          }
-          {output.questions &&
-            <div className="mb-5">
-              <h2 className="text-lg weight-400 underline uppercase">Questions</h2>
-              <div dangerouslySetInnerHTML={{ __html: sanitize(output.questions) }} />
-            </div>
-          }
-          {output.links &&
-            <div>
-              <h2 className="text-lg weight-400 underline uppercase">Resources</h2>
-              <div dangerouslySetInnerHTML={{ __html: output.links }} />
-            </div>
-          }
+        <div className="overflow-scroll" id="#preparation">
+          {output.intro && Section("Introduction", output.intro)}
+          {output.prep && Section("Preparation", output.prep)}
+          {output.questions && Section("Questions", output.questions)}
+          {output.links && Section("Resources", output.links)}
         </div>
-        : <div className="h-full flex justify-center items-center weight-400 relative text-xl top-[-100px]">
-          {loading ?
-            <div className="flex flex-col items-center">
-              <GridLoader color="#36d7b7" />
-              <span>Generating prep material with AI...</span>
-            </div>
-            : <span>Fill in details about yourself and the job</span>}
-        </div>
+        : <NoOutput loading={loading} />
       }
     </div>
   )
