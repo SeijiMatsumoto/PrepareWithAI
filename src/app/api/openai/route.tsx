@@ -18,7 +18,6 @@ export async function POST(req: NextRequest, res: any) {
           "OpenAI API key not configured, please follow instructions in README.md",
       },
     }, { status: 500 });
-    return;
   }
 
   const body = await req.json();

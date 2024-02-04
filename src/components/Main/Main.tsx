@@ -46,10 +46,10 @@ const Main = () => {
 
     setLoading(false);
     const json = await response.json();
-    const intro = json.result.intro;
-    const prep = json.result.prep;
-    const questions = json.result.questions;
-    const links = json.result.links;
+    const intro = json.result?.intro || null;
+    const prep = json.result?.prep || null;
+    const questions = json.result?.questions || null;
+    const links = json.result?.links || null;
 
     setOutput({
       intro,
