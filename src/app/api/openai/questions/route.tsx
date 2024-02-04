@@ -27,7 +27,7 @@ export async function POST(req: NextRequest, res: any) {
         {
           role: "user",
           content:
-            `Give me 30 interview questions that might be asked for the following job description: ${jd}`,
+            `Give me 10 interview questions that might be asked for the following job description: ${jd}`,
         },
       ],
       model: "gpt-3.5-turbo"

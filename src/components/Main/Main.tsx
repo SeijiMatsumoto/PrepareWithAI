@@ -4,25 +4,15 @@ import Details from '../Details/Details'
 import Output from '../Output/Output'
 import useLocalStorage from '@/hooks/useLocalStorage'
 
-type OutputType = {
-  intro?: string;
-  prep?: string;
-  questions?: string;
-  links?: string;
-}
-
 const Main = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [output, setOutput] = useState<OutputType | null>(null);
   const [aboutMeInput, setAboutMeInput] = useLocalStorage('aboutMe', '');
   const [jdInput, setJdInput] = useLocalStorage('jobDesc', '');
 
-  useEffect(() => {
-    const lsOutput = localStorage.getItem("output");
-    if (lsOutput) {
-      setOutput(JSON.parse(lsOutput));
-    }
-  }, [])
+  const [intro, setIntro] = useLocalStorage('intro', null);
+  const [prep, setPrep] = useLocalStorage('prep', null);
+  const [questions, setQuestions] = useLocalStorage('questions', null);
+  const [links, setLinks] = useLocalStorage('links', null);
 
   const clickHandler = () => {
     if (!aboutMeInput?.length || !jdInput?.length) {
@@ -42,10 +32,9 @@ const Main = () => {
       body: JSON.stringify({ me: aboutMeInput, jd: jdInput })
     })
 
-    setLoading(false);
     const json = await response.json();
-    console.log(json);
     const data = json.result || null;
+    if (data) setIntro(data)
   }
 
   const getPrep = async () => {
@@ -58,10 +47,9 @@ const Main = () => {
       body: JSON.stringify({ jd: jdInput })
     })
 
-    setLoading(false);
     const json = await response.json();
-    console.log(json);
     const data = json.result || null;
+    if (data) setPrep(data);
   }
 
   const getQuestions = async () => {
@@ -74,14 +62,13 @@ const Main = () => {
       body: JSON.stringify({ jd: jdInput })
     })
 
-    setLoading(false);
     const json = await response.json();
-    console.log(json);
     const data = json.result || null;
+    if (data) setQuestions(data);
   }
 
-  const getResources = async () => {
-    const response = await fetch("/api/openai/resources", {
+  const getLinks = async () => {
+    const response = await fetch("/api/openai/links", {
       method: "POST",
       headers: {
         "Accept": "application/json",
@@ -90,26 +77,29 @@ const Main = () => {
       body: JSON.stringify({ jd: jdInput })
     })
 
-    setLoading(false);
     const json = await response.json();
-    console.log(json);
     const data = json.result || null;
+    if (data) setLinks(data);
   }
 
   const getData = () => {
     setLoading(true);
-    setOutput(null);
+    setIntro(null);
+    setPrep(null);
+    setQuestions(null);
+    setLinks(null);
 
     getIntro();
     getPrep();
     getQuestions();
-    getResources();
+    getLinks();
   }
 
   useEffect(() => {
-    if (output) localStorage.setItem("output", JSON.stringify(output));
-    else localStorage.removeItem("output");
-  }, [output])
+    if (intro && prep && questions && links) {
+      setLoading(false)
+    }
+  }, [intro, prep, questions, links])
 
   return (
     <div className="flex flex-row justify-between shadow-2xl bg-white rounded-lg p-10 w-full min-h-screen-fit">
@@ -120,7 +110,12 @@ const Main = () => {
         setJdInput={setJdInput}
         clickHandler={clickHandler}
       />
-      <Output output={output} loading={loading} />
+      <Output output={{
+        intro: intro,
+        prep: prep,
+        questions: questions,
+        links: links
+      }} loading={loading} />
     </div>
   )
 }
