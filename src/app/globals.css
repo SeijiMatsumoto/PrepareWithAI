@@ -79,3 +79,7 @@ body {
 ::-webkit-scrollbar-thumb:active {
   background-color: #555;
 }
+
+nextjs-portal {
+  display: none;
+}

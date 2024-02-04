@@ -90,6 +90,7 @@ const Main = () => {
     console.log('Links:', json);
     const data = json.result || null;
     if (data) setLinks(data);
+    else setLinks("");
   }
 
   const getData = () => {
@@ -104,6 +105,7 @@ const Main = () => {
 
   useEffect(() => {
     if (intro && prep && questions && links) {
+      console.log("Set loading to false");
       setLoading(false)
     }
   }, [intro, prep, questions, links])
