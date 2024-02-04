@@ -28,7 +28,7 @@ export async function POST(req: NextRequest, res: any) {
         {
           role: "user",
           content:
-            `Give me an introduction that I can say for a job interview in one paragraph. Write in a way that is natural for verbally saying it to an interviewer in person. Make the introduction relevant to the job description and keep it short - about 2-4 sentences.
+            `Give me an introduction that I can say for a job interview. Make the introduction relevant to the job description and keep it short - about 2-4 sentences.
             Here's some information about me: ${me}.
             Here is the job description: ${jd}`,
         },

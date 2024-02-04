@@ -43,7 +43,7 @@ const InputSection = ({ input, setInput, title, buttonText, placeholder }: Props
         const page = await pdf.getPage(i);
         const textContent = await page.getTextContent();
         const pageText = textContent.items.map((item: any) => item.str).join(' ');
-        fullText += pageText + '\n'; // Add newline after each page
+        fullText += pageText + '\n';
       }
 
       setInput(fullText);
