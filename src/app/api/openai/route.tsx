@@ -89,7 +89,7 @@ export async function POST(req: NextRequest, res: any) {
         {
           role: "user",
           content:
-            `Give me links for resources that can help me prepare for this job, such as documentation on technical stuff, advice for interviews, and other interview prep links. I need them in an unordered list with bullets and <a> tags
+            `Give me links for resources that can help me prepare for this job, such as documentation on technical stuff, advice for interviews, and other interview prep links. Also need links that are directly related to the skills required listed on the job description. I need them in an unordered list with bullets and <a> tags
             Here is the job description: ${jd}`,
         },
       ],
