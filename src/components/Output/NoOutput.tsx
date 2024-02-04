@@ -21,7 +21,7 @@ const NoOutput = ({ loading }: Props) => {
     <div className="h-full flex justify-center items-center weight-400 relative text-xl">
       {loading ?
         <div className="flex flex-col items-center">
-          <GridLoader color="#36d7b7" />
+          <GridLoader color="rgb(31 41 55)" />
           <span>{loadingText}</span>
         </div>
         : <span>Fill in details about yourself and the job</span>}
