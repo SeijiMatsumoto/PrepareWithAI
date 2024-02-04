@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import JsPDF from 'jspdf';
+import { jsPDF } from 'jspdf';
 import { GridLoader } from 'react-spinners';
 
 type Props = {
@@ -30,12 +30,26 @@ const Output = ({ output, loading }: Props) => {
     )
   }
 
-  const exportPdf = () => {
-    const report: any = new JsPDF('portrait', 'pt', 'a4');
-    report.html(document.querySelector('#preparation')).then(() => {
-      report.save('prepareWithAiMaterial.pdf');
-    }).catch((err: Error) => console.error(err))
-  }
+  const handleExportPDF = () => {
+    // Create a new jsPDF instance
+
+    var pdf = new jsPDF("p", "mm", "a4");
+    const el = document.querySelector("#preparation") as HTMLElement;
+
+    // Add text to the PDF
+    pdf.html(el, {
+      callback: function (doc) {
+        // Save the PDF
+        const date = new Date();
+        doc.save(`prepareWithAI_${date.getTime()}.pdf`,);
+      },
+      x: 15,
+      y: 15,
+      width: 170, //target width in the PDF document
+      windowWidth: 650 //window width in CSS pixels
+    })
+  };
+
 
   console.log(output);
 
@@ -45,14 +59,14 @@ const Output = ({ output, loading }: Props) => {
         <h2 className="text-2xl mb-5">Interview Preparation Guide</h2>
         {output !== null ? <button
           className="flex flex-row shadow-md rounded-md bg-slate-50 items-center justify-center text-center p-2 transition duration-200 hover:bg-slate-100 cursor-pointer active:bg-slate-200"
-          onClick={exportPdf}
+          onClick={handleExportPDF}
         >
           <span>Export as PDF</span>
         </button> : null}
       </div>
       {output?.intro || output?.prep || output?.questions || output?.links ?
         <div className="overflow-scroll">
-          <div id="#preparation">
+          <div id="preparation">
             {output.intro && Section("Introduction", output.intro)}
             {output.prep && Section("Preparation", output.prep)}
             {output.questions && Section("Questions", output.questions)}
