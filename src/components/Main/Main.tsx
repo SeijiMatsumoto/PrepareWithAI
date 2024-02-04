@@ -36,6 +36,7 @@ const Main = () => {
     console.log("Intro:", json)
     const data = json.result || null;
     if (data) setIntro(data)
+    else setIntro("");
     getPrep();
   }
 
@@ -53,6 +54,7 @@ const Main = () => {
     console.log('Prep:', json);
     const data = json.result || null;
     if (data) setPrep(data);
+    else setPrep("");
     getQuestions();
   }
 
@@ -70,6 +72,7 @@ const Main = () => {
     console.log("Questions:", json)
     const data = json.result || null;
     if (data) setQuestions(data);
+    else setQuestions("");
   }
 
   const getLinks = async () => {

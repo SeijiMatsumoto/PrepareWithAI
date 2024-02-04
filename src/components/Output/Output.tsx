@@ -21,6 +21,7 @@ const Output = ({ output, loading }: Props) => {
   }
 
   const Section = (title: string, content: string) => {
+    if (!content.length) return null;
     return (
       <div className="mb-5">
         <h2 className="text-lg weight-400 underline uppercase">{title}</h2>
