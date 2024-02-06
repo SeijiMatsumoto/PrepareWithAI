@@ -11,6 +11,7 @@
     "test:watch": "jest --watchAll"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.18.1",
     "axios": "^1.6.7",
     "jspdf": "^2.5.1",
     "next": "14.1.0",
@@ -24,6 +25,7 @@
     "react-spinners": "^0.13.8"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.18.1",
     "@testing-library/jest-dom": "^6.4.1",
     "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.5.2",

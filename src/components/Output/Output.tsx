@@ -31,12 +31,9 @@ const Output = ({ output, loading }: Props) => {
   }
 
   const handleExportPDF = () => {
-    // Create a new jsPDF instance
-
     var pdf = new jsPDF("p", "mm", "a4");
     const el = document.querySelector("#preparation") as HTMLElement;
 
-    // Add text to the PDF
     pdf.html(el, {
       callback: function (doc) {
         // Save the PDF
@@ -50,9 +47,6 @@ const Output = ({ output, loading }: Props) => {
     })
   };
 
-
-  console.log(output);
-
   return (
     <div className="flex flex-col w-3/5 pl-10">
       <div className="flex justify-between w-full flex-row mb-2">
@@ -64,7 +58,7 @@ const Output = ({ output, loading }: Props) => {
           <span>Export as PDF</span>
         </button> : null}
       </div>
-      {output?.intro || output?.prep || output?.questions || output?.links ?
+      {output ?
         <div className="overflow-scroll">
           <div id="preparation">
             {output.intro && Section("Introduction", output.intro)}

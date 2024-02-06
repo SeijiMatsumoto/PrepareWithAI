@@ -3,112 +3,62 @@ import React, { useEffect, useState } from 'react'
 import Details from '../Details/Details'
 import Output from '../Output/Output'
 import useLocalStorage from '@/hooks/useLocalStorage'
+import { useQuery } from '@tanstack/react-query'
+
+interface OutputType {
+  intro?: string | null;
+  prep?: string | null;
+  questions?: string | null;
+  links?: string | null;
+}
+
+type type = ("intro" | "prep" | "questions" | "links")
 
 const Main = () => {
-  const [loading, setLoading] = useState<boolean>(false);
   const [aboutMeInput, setAboutMeInput] = useLocalStorage('aboutMe', '');
   const [jdInput, setJdInput] = useLocalStorage('jobDesc', '');
+  const [output, setOutput] = useState<OutputType | null>(null);
 
-  const [intro, setIntro] = useLocalStorage('intro', null);
-  const [prep, setPrep] = useLocalStorage('prep', null);
-  const [questions, setQuestions] = useLocalStorage('questions', null);
-  const [links, setLinks] = useLocalStorage('links', null);
+  const { refetch, isSuccess, error, isFetching } = useQuery({ queryKey: ['aiData'], queryFn: () => getData(["intro", "prep", "questions", "links"]), enabled: false });
+
+  if (error) console.log(error)
 
   const clickHandler = () => {
     if (!aboutMeInput?.length || !jdInput?.length) {
       window.alert("Fill out details about yourself and the job!")
     } else {
-      getData();
+      setOutput(null);
+      refetch();
     }
   }
 
-  const getIntro = async () => {
-    const response = await fetch("/api/openai/intro", {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ me: aboutMeInput, jd: jdInput })
-    })
-
-    const json = await response.json();
-    console.log("Intro:", json)
-    const data = json.result || null;
-    if (data) setIntro(data)
-    else setIntro("");
-    getPrep();
-  }
-
-  const getPrep = async () => {
-    const response = await fetch("/api/openai/prep", {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ jd: jdInput })
-    })
-
-    const json = await response.json();
-    console.log('Prep:', json);
-    const data = json.result || null;
-    if (data) setPrep(data);
-    else setPrep("");
-    getQuestions();
-  }
-
-  const getQuestions = async () => {
-    const response = await fetch("/api/openai/questions", {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ jd: jdInput })
-    })
-
-    const json = await response.json();
-    console.log("Questions:", json)
-    const data = json.result || null;
-    if (data) setQuestions(data);
-    else setQuestions("");
-    getLinks();
-  }
-
-  const getLinks = async () => {
-    const response = await fetch("/api/openai/links", {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ jd: jdInput })
-    })
-
-    const json = await response.json();
-    console.log('Links:', json);
-    const data = json.result || null;
-    if (data) setLinks(data);
-    else setLinks("");
-  }
-
-  const getData = () => {
-    setLoading(true);
-    setIntro(null);
-    setPrep(null);
-    setQuestions(null);
-    setLinks(null);
-
-    getIntro();
-  }
-
-  useEffect(() => {
-    if (intro && prep && questions && links) {
-      console.log("Set loading to false");
-      setLoading(false)
+  const getData = async (types: type[]) => {
+    if (!aboutMeInput?.length || !jdInput?.length) {
+      return null;
     }
-  }, [intro, prep, questions, links])
+    for (let i = 0; i < types.length; i++) {
+      const type = types[i];
+
+      const response = await fetch(`/api/openai/${type}`, {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ me: aboutMeInput, jd: jdInput, type: type })
+      });
+
+      const json = await response.json();
+      if (json.result) {
+        setOutput((prevOutput) => {
+          const outputCopy = JSON.parse(JSON.stringify(prevOutput || {}));
+          outputCopy[type] = json.result;
+          return outputCopy;
+        })
+      }
+    }
+    return true;
+  }
 
   return (
     <div className="flex flex-row justify-between shadow-2xl bg-white rounded-lg p-10 w-full min-h-screen-fit">
@@ -119,12 +69,7 @@ const Main = () => {
         setJdInput={setJdInput}
         clickHandler={clickHandler}
       />
-      <Output output={{
-        intro: intro,
-        prep: prep,
-        questions: questions,
-        links: links
-      }} loading={loading} />
+      <Output output={output} loading={isFetching} />
     </div>
   )
 }
