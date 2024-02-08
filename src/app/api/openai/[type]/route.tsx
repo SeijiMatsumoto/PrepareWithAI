@@ -9,7 +9,7 @@ export async function POST(req: NextRequest, res: any) {
   const me: string = body.me || "";
   const jd: string = body.jd || "";
 
-  const content = "You are helping me prepare for a job interview. Don't give me any response except the information I am looking for. I need the response in HTML format so I can dangerouslySetInnerHtml. Any newline \n should be <br>.";
+  const content = "You are helping me prepare for a job interview. Don't give me any response except the information I am looking for. I need the response in a <div> so I can dangerouslySetInnerHtml. Any newline \n should be <br>. Keep responses short so it wouldn't take more than 10 seconds per request.";
 
   const contentByType = {
     intro: `Give me an introduction that I can say for a job interview. Make the introduction relevant to the job description and keep it short - about 2-4 sentences.
