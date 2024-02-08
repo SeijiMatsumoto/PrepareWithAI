@@ -23,7 +23,7 @@ const Main = () => {
 
   if (error) console.log(error)
 
-  const clickHandler = () => {
+  const submitHandler = () => {
     if (!aboutMeInput?.length || !jdInput?.length) {
       window.alert("Fill out details about yourself and the job!")
     } else {
@@ -66,7 +66,7 @@ const Main = () => {
         setAboutMeInput={setAboutMeInput}
         jdInput={jdInput}
         setJdInput={setJdInput}
-        clickHandler={clickHandler}
+        submitHandler={submitHandler}
       />
       <Output output={output} loading={isFetching} />
     </div>
