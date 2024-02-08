@@ -2,21 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 
 const OpenAI = require("openai");
 const openai = new OpenAI({ key: process.env.OPENAI_API_KEY });
+export const runtime = 'edge';
 
 export async function POST(req: NextRequest, res: any) {
   const body = await req.json();
   const me: string = body.me || "";
   const jd: string = body.jd || "";
 
-  const content = "You are helping me prepare for a job interview.";
-
   try {
     const response = await openai.chat.completions.create({
       messages: [
-        {
-          role: "system",
-          content,
-        },
         {
           role: "user",
           content: `

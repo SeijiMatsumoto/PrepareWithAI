@@ -5,14 +5,12 @@ import Output from '../Output/Output'
 import useLocalStorage from '@/hooks/useLocalStorage'
 import { useQuery } from '@tanstack/react-query'
 
-type type = ("intro" | "prep" | "questions" | "links")
-
 const Main = () => {
   const [aboutMeInput, setAboutMeInput] = useLocalStorage('aboutMe', '');
   const [jdInput, setJdInput] = useLocalStorage('jobDesc', '');
   const [message, setMessage] = useState<string>('');
 
-  const { refetch, error, isFetching } = useQuery({ queryKey: ['aiData'], queryFn: () => getData(["intro", "prep", "questions", "links"]), enabled: false });
+  const { refetch, error, isFetching } = useQuery({ queryKey: ['aiData'], queryFn: getData, enabled: false });
 
   if (error) console.log(error)
 
@@ -26,7 +24,7 @@ const Main = () => {
     }
   }
 
-  const getData = async (types: type[]) => {
+  async function getData() {
     if (!aboutMeInput?.length || !jdInput?.length) {
       return null;
     }
