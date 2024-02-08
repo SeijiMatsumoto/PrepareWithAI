@@ -1,33 +1,27 @@
 "use client"
-import React, { useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import Details from '../Details/Details'
 import Output from '../Output/Output'
 import useLocalStorage from '@/hooks/useLocalStorage'
 import { useQuery } from '@tanstack/react-query'
-
-interface OutputType {
-  intro?: string | null;
-  prep?: string | null;
-  questions?: string | null;
-  links?: string | null;
-}
 
 type type = ("intro" | "prep" | "questions" | "links")
 
 const Main = () => {
   const [aboutMeInput, setAboutMeInput] = useLocalStorage('aboutMe', '');
   const [jdInput, setJdInput] = useLocalStorage('jobDesc', '');
-  const [output, setOutput] = useState<OutputType | null>(null);
+  const [message, setMessage] = useState<string>('');
 
   const { refetch, error, isFetching } = useQuery({ queryKey: ['aiData'], queryFn: () => getData(["intro", "prep", "questions", "links"]), enabled: false });
 
   if (error) console.log(error)
 
-  const submitHandler = () => {
+  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!aboutMeInput?.length || !jdInput?.length) {
       window.alert("Fill out details about yourself and the job!")
     } else {
-      setOutput(null);
+      setMessage("");
       refetch();
     }
   }
@@ -36,25 +30,18 @@ const Main = () => {
     if (!aboutMeInput?.length || !jdInput?.length) {
       return null;
     }
-    for (let i = 0; i < types.length; i++) {
-      const type = types[i];
-      const response = await fetch(`/api/openai/${type}`, {
-        method: "POST",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ me: aboutMeInput, jd: jdInput, type: type })
-      });
+    const response = await fetch(`/api/openai/chat`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ me: aboutMeInput, jd: jdInput })
+    });
 
-      const json = await response.json();
-      if (json.result) {
-        setOutput((prevOutput) => {
-          const outputCopy = JSON.parse(JSON.stringify(prevOutput || {}));
-          outputCopy[type] = json?.result.trim();
-          return outputCopy;
-        })
-      }
+    const json = await response.json();
+    if (json.result) {
+      setMessage(json.result.trim());
     }
     return true;
   }
@@ -68,7 +55,7 @@ const Main = () => {
         setJdInput={setJdInput}
         submitHandler={submitHandler}
       />
-      <Output output={output} loading={isFetching} />
+      <Output message={message} loading={isFetching} />
     </div>
   )
 }
