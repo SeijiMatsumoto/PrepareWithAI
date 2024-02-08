@@ -12,6 +12,10 @@ interface OutputType {
   links?: string | null;
 }
 
+type responseType = {
+  result: string;
+}
+
 type type = ("intro" | "prep" | "questions" | "links")
 
 const Main = () => {
@@ -38,26 +42,33 @@ const Main = () => {
     }
     for (let i = 0; i < types.length; i++) {
       const type = types[i];
+      let json: responseType | null = null;
+      while (!json) {
+        json = await getResponse(type);
+      }
 
-      const response = await fetch(`/api/openai/${type}`, {
-        method: "POST",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ me: aboutMeInput, jd: jdInput, type: type })
-      });
-
-      const json = await response.json();
       if (json.result) {
         setOutput((prevOutput) => {
           const outputCopy = JSON.parse(JSON.stringify(prevOutput || {}));
-          outputCopy[type] = json.result;
+          outputCopy[type] = json?.result.trim();
           return outputCopy;
         })
       }
     }
     return true;
+  }
+
+  const getResponse = async (type: string) => {
+    const response = await fetch(`/api/openai/${type}`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ me: aboutMeInput, jd: jdInput, type: type })
+    });
+
+    return response.json();
   }
 
   return (
