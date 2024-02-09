@@ -83,3 +83,7 @@ body {
 nextjs-portal {
   display: none;
 }
+
+.links a {
+  text-decoration: underline;
+}
