@@ -1,13 +1,14 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, FormEvent } from 'react'
 import { pdfjs } from 'react-pdf';
 import { FileUploader } from "react-drag-drop-files";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+type LocalStorageValue = string | null;
 
 type Props = {
   input: string | null;
-  setInput: any;
+  setInput: (input: string) => void;
   title: string;
   placeholder: string;
 }
@@ -65,7 +66,7 @@ const InputSection = ({ input, setInput, title, placeholder }: Props) => {
         className="mt-3 text-xs w-full h-40 p-4 border rounded-md resize-none mb-5"
         placeholder={placeholder}
         value={input || ""}
-        onChange={setInput}
+        onChange={(e: FormEvent<HTMLTextAreaElement>) => { e.preventDefault(); setInput((e.target as HTMLTextAreaElement).value) }}
       />
     </div>
   )

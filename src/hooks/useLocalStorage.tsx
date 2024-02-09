@@ -11,13 +11,17 @@ const useLocalStorage = (
   const isLocalStorageAvailable = typeof window !== 'undefined' && window.localStorage;
 
   const storedValue = isLocalStorageAvailable ? localStorage.getItem(key) : null;
-  const initial = storedValue ? JSON.parse(storedValue) : initialValue;
+  const initial = storedValue ? storedValue : initialValue;
 
   const [value, setValue] = useState<LocalStorageValue>(initial);
 
   const setStoredValue = (newValue: LocalStorageValue) => {
     setValue(newValue);
-    localStorage.setItem(key, JSON.stringify(newValue));
+    if (newValue === null || typeof newValue === 'string') {
+      localStorage.setItem(key, newValue as string);
+    } else {
+      console.error('Invalid value type. Only string or null are allowed for localStorage.');
+    }
   };
 
   return [value, setStoredValue];
