@@ -1,47 +1,30 @@
 "use client"
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent } from 'react'
 import Details from '../Details/Details'
-import Output from '../Output/Output'
 import useLocalStorage from '@/hooks/useLocalStorage'
-import { useQuery } from '@tanstack/react-query'
+import { useCompletion } from "ai/react";
+import Output from '../Output/Output';
 
 const Main = () => {
+  const { complete, completion: message, isLoading, stop } = useCompletion({
+    api: "/api/openai/chat",
+  });
   const [aboutMeInput, setAboutMeInput] = useLocalStorage('aboutMe', '');
   const [jdInput, setJdInput] = useLocalStorage('jobDesc', '');
-  const [message, setMessage] = useState<string>('');
-
-  const { refetch, error, isFetching } = useQuery({ queryKey: ['aiData'], queryFn: getData, enabled: false });
-
-  if (error) console.log(error)
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!aboutMeInput?.length || !jdInput?.length) {
       window.alert("Fill out details about yourself and the job!")
     } else {
-      setMessage("");
-      refetch();
+      if (!isLoading) {
+        complete(`This is my resume: ${aboutMeInput}
+        and this is the job description: ${jdInput}
+        Give me job preparation guide including steps to take, questions on interview, resources. Bold each section heading with <b> tag `)
+      } else {
+        stop();
+      }
     }
-  }
-
-  async function getData() {
-    if (!aboutMeInput?.length || !jdInput?.length) {
-      return null;
-    }
-    const response = await fetch(`/api/openai/chat`, {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ me: aboutMeInput, jd: jdInput })
-    });
-
-    const json = await response.json();
-    if (json.result) {
-      setMessage(json.result.trim());
-    }
-    return true;
   }
 
   return (
@@ -52,8 +35,10 @@ const Main = () => {
         jdInput={jdInput}
         setJdInput={setJdInput}
         submitHandler={submitHandler}
+        loading={isLoading}
+        message={message}
       />
-      <Output message={message} loading={isFetching} />
+      <Output message={message} loading={isLoading} />
     </div>
   )
 }

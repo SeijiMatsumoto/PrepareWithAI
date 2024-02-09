@@ -7,12 +7,14 @@ type Props = {
   jdInput: string | null;
   setJdInput: (input: string) => void;
   submitHandler: (e: FormEvent<HTMLFormElement>) => void;
+  loading: boolean;
+  message: string;
 }
 
-const Details = ({ aboutMeInput, setAboutMeInput, jdInput, setJdInput, submitHandler }: Props) => {
+const Details = ({ aboutMeInput, setAboutMeInput, jdInput, setJdInput, submitHandler, loading, message }: Props) => {
   return (
     <form className="flex w-2/5 border-r-2 flex-col" onSubmit={(e: FormEvent<HTMLFormElement>) => submitHandler(e)}>
-      <h2 className="text-2xl mb-5">Details</h2>
+      <h2 className="text-2xl mb-5 font-bold">Details</h2>
       <div className="flex flex-col overflow-scroll pr-10 mb-3">
         <InputSection
           input={aboutMeInput}
@@ -31,7 +33,7 @@ const Details = ({ aboutMeInput, setAboutMeInput, jdInput, setJdInput, submitHan
       <input
         className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded text-center active:translate-y-0.1 mr-10 cursor-pointer"
         type="submit"
-        value="Generate" />
+        value={loading ? "Stop" : message.length ? "Regenerate" : "Generate"} />
     </form>
   )
 }

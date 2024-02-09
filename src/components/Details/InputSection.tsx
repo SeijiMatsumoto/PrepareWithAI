@@ -7,7 +7,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 
 type Props = {
   input: string | null;
-  setInput: (input: string) => void;
+  setInput: any;
   title: string;
   buttonText: string;
   placeholder: string;
@@ -56,7 +56,7 @@ const InputSection = ({ input, setInput, title, buttonText, placeholder }: Props
 
   return (
     <div>
-      <h2 className="text-lg weight-500">{title}</h2>
+      <h2 className="text-lg font-bold">{title}</h2>
       {!loading && <div className="w-full flex mt-3 text-sm justify-center align-center rounded-lg text-center cursor-pointer transition duration-100 file-uploader">
         <FileUploader handleChange={handleFileChange} name="file" accept=".pdf" types={fileTypes} multiple={false} />
       </div>}
@@ -64,7 +64,7 @@ const InputSection = ({ input, setInput, title, buttonText, placeholder }: Props
         className="mt-3 text-xs w-full h-40 p-4 border rounded-md resize-none mb-5"
         placeholder={placeholder}
         value={input || ""}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={setInput}
       />
     </div>
   )
