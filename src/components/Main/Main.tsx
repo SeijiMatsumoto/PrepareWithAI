@@ -1,11 +1,13 @@
 "use client"
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState, useRef } from 'react'
 import Details from '../Details/Details'
 import useLocalStorage from '@/hooks/useLocalStorage'
 import { useCompletion } from "ai/react";
 import Output from '../Output/Output';
 
 const Main = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const { complete, completion: message, isLoading, stop, error } = useCompletion({
     api: "/api/openai/chat",
   });
@@ -13,6 +15,21 @@ const Main = () => {
   const [jdInput, setJdInput] = useLocalStorage('jobDesc', '');
   const [isResume, setIsResume] = useState<boolean>(false);
   const [invalidInput, setInvalidInput] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (window.innerWidth > 768) setIsMobile(false)
+  }, [])
+
+  useEffect(() => {
+    setInvalidInput(false);
+  }, [jdInput, aboutMeInput]);
+
+  useEffect(() => {
+    if (isLoading && containerRef.current && isMobile) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [message, isLoading])
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,12 +49,8 @@ const Main = () => {
     }
   }
 
-  useEffect(() => {
-    setInvalidInput(false);
-  }, [jdInput, aboutMeInput]);
-
   return (
-    <div
+    <div ref={containerRef}
       className="flex flex-col w-full shadow-2xl bg-white rounded-lg p-4 min-h-screen-fit overflow-scroll md:justify-between md:p-10 md:flex-row md:overflow-hidden">
       <Details
         aboutMeInput={aboutMeInput}
@@ -49,8 +62,9 @@ const Main = () => {
         message={message}
         setIsResume={setIsResume}
         invalidInput={invalidInput}
+
       />
-      <Output message={message} loading={isLoading} error={error} />
+      <Output message={message} loading={isLoading} error={error} stop={stop} />
     </div>
   )
 }
