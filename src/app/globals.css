@@ -38,12 +38,6 @@ body {
   max-height: calc(100vh - 150px);
 }
 
-@media screen and (max-width: 768px) {
-  .min-h-screen-fit {
-    max-height: calc(100vh - 100px);
-  }
-}
-
 .file-uploader > label {
   width: 100%;
   height: 80px !important;
