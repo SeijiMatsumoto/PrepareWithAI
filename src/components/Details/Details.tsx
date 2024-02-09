@@ -9,9 +9,11 @@ type Props = {
   submitHandler: (e: FormEvent<HTMLFormElement>) => void;
   loading: boolean;
   message: string;
+  setIsResume: (isResume: boolean) => void;
+  invalidInput: boolean;
 }
 
-const Details = ({ aboutMeInput, setAboutMeInput, jdInput, setJdInput, submitHandler, loading, message }: Props) => {
+const Details = ({ aboutMeInput, setAboutMeInput, jdInput, setJdInput, submitHandler, loading, message, invalidInput, setIsResume }: Props) => {
   return (
     <form data-testid="main-form" className="flex w-full flex-col mb-5 pb-5 border-b-2 md:mb-0 md:w-2/5 md:border-r-2 md:border-b-0 md:pb-0" onSubmit={(e: FormEvent<HTMLFormElement>) => submitHandler(e)}>
       <h2 className="text-2xl mb-5 font-bold">Details</h2>
@@ -20,13 +22,17 @@ const Details = ({ aboutMeInput, setAboutMeInput, jdInput, setJdInput, submitHan
           input={aboutMeInput}
           setInput={setAboutMeInput}
           title="About Me"
-          placeholder="Enter a few sentences about your own work experience or attach your resume above" />
+          placeholder="Enter a few sentences about your own work experience or attach your resume above"
+          setIsResume={setIsResume}
+          invalidInput={invalidInput}
+        />
         <hr className="mb-3"></hr>
         <InputSection
           input={jdInput}
           setInput={setJdInput}
           title="Job Description"
-          placeholder="Paste in job description here or import PDF above" />
+          placeholder="Paste in job description here or import PDF above"
+          invalidInput={invalidInput} />
       </div>
       <input
         className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded text-center active:translate-y-0.1 md:mr-10 cursor-pointer"

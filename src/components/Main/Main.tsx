@@ -1,5 +1,5 @@
 "use client"
-import React, { FormEvent } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import Details from '../Details/Details'
 import useLocalStorage from '@/hooks/useLocalStorage'
 import { useCompletion } from "ai/react";
@@ -11,21 +11,30 @@ const Main = () => {
   });
   const [aboutMeInput, setAboutMeInput] = useLocalStorage('aboutMe', '');
   const [jdInput, setJdInput] = useLocalStorage('jobDesc', '');
+  const [isResume, setIsResume] = useState<boolean>(false);
+  const [invalidInput, setInvalidInput] = useState<boolean>(false);
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!aboutMeInput?.length || !jdInput?.length) {
       console.log("Fill out details about yourself and the job!")
+      setInvalidInput(true);
     } else {
+      setInvalidInput(false);
       if (!isLoading) {
-        complete(`This is my resume: ${aboutMeInput}
+        const prompt = `This is my ${isResume ? 'resume' : 'brief description'}: ${aboutMeInput}
         and this is the job description: ${jdInput}
-        Give me job preparation guide including information about the company, steps to take to prepare, questions that might get asked interview, questions to ask interviewer, resources. Bold each section heading with <b> tag and links in <a> tags.`)
+        Give me job preparation guide including information about the company in the job description, how well my ${isResume ? 'resume' : 'description'} matches with the job description, steps to take to prepare, questions that might get asked interview, questions to ask interviewer, resources. Bold each section heading with <b> tag and links in <a> tags.`
+        complete(prompt);
       } else {
         stop();
       }
     }
   }
+
+  useEffect(() => {
+    setInvalidInput(false);
+  }, [jdInput, aboutMeInput]);
 
   return (
     <div
@@ -38,6 +47,8 @@ const Main = () => {
         submitHandler={submitHandler}
         loading={isLoading}
         message={message}
+        setIsResume={setIsResume}
+        invalidInput={invalidInput}
       />
       <Output message={message} loading={isLoading} error={error} />
     </div>

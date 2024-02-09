@@ -4,16 +4,17 @@ import { pdfjs } from 'react-pdf';
 import { FileUploader } from "react-drag-drop-files";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
-type LocalStorageValue = string | null;
 
 type Props = {
   input: string | null;
   setInput: (input: string) => void;
   title: string;
   placeholder: string;
+  setIsResume?: (isResume: boolean) => void;
+  invalidInput: boolean;
 }
 
-const InputSection = ({ input, setInput, title, placeholder }: Props) => {
+const InputSection = ({ input, setInput, title, placeholder, setIsResume, invalidInput }: Props) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isMobile, setIsMobile] = useState<boolean>(true);
 
@@ -48,6 +49,7 @@ const InputSection = ({ input, setInput, title, placeholder }: Props) => {
         fullText += pageText + '\n';
       }
 
+      if (setIsResume) setIsResume(true);
       setInput(fullText);
     };
 
@@ -63,7 +65,7 @@ const InputSection = ({ input, setInput, title, placeholder }: Props) => {
         <FileUploader handleChange={handleFileChange} name="file" accept=".pdf" types={fileTypes} multiple={false} label={isMobile ? "Upload your resume here" : "Upload or drop your resume file here"} />
       </div>}
       <textarea
-        className="mt-3 text-xs w-full h-40 p-4 border rounded-md resize-none mb-5"
+        className={`mt-3 text-xs w-full h-40 p-4 border rounded-md resize-none mb-5 ${invalidInput && !input?.length ? "border-red-600 border-2 border-solid" : ""}`}
         placeholder={placeholder}
         value={input || ""}
         onChange={(e: FormEvent<HTMLTextAreaElement>) => { e.preventDefault(); setInput((e.target as HTMLTextAreaElement).value) }}
