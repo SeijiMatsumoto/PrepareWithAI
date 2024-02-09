@@ -13,6 +13,7 @@
   "dependencies": {
     "@react-hook/media-query": "^1.1.1",
     "ai": "^2.2.33",
+    "dompurify": "^3.0.8",
     "jspdf": "^2.5.1",
     "next": "14.1.0",
     "openai": "^4.26.0",
@@ -29,6 +30,7 @@
     "@testing-library/jest-dom": "^6.4.1",
     "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.5.2",
+    "@types/dompurify": "^3.0.5",
     "@types/jest": "^29.5.12",
     "@types/node": "^20",
     "@types/react": "^18",

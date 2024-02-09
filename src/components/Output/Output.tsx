@@ -2,14 +2,17 @@
 import React, { useRef, useEffect } from 'react'
 import { jsPDF } from 'jspdf';
 import { GridLoader } from 'react-spinners';
+import { FaStop } from "react-icons/fa6";
+import DOMPurify from "dompurify";
 
 type Props = {
   message: string;
   loading: boolean;
   error?: Error;
+  stop: any;
 }
 
-const Output = ({ message, loading, error }: Props) => {
+const Output = ({ message, loading, error, stop }: Props) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,10 +44,10 @@ const Output = ({ message, loading, error }: Props) => {
     return formattedDate;
   }
 
-  message = message ? message.replaceAll("\n", "<br>") : "";
+  message = message ? DOMPurify.sanitize(message.replaceAll("\n", "<br>")) : "";
 
   return (
-    <div className="flex flex-col w-full md:w-3/5 md:pl-10">
+    <div className="flex flex-col w-full md:w-3/5 md:pl-10 relative">
       <div className="flex justify-between w-full flex-row mb-2">
         <h2 className="text-2xl mb-5 font-bold">Preparation Guide by AI</h2>
         {message.length ? <button
@@ -55,14 +58,17 @@ const Output = ({ message, loading, error }: Props) => {
         </button> : null}
       </div>
       {message.length ?
-        <div className="overflow-scroll" ref={contentRef} >
+        <div className="md:overflow-scroll" ref={contentRef} >
           <div id="preparation">
-            <div className="links" dangerouslySetInnerHTML={{ __html: message }} />
+            <div className="links mb-10" dangerouslySetInnerHTML={{ __html: message }} />
           </div>
           {loading && <div className="flex flex-col items-center mt-5">
             <GridLoader color="rgb(31 41 55)" size={10} />
             <span>Generating with AI...</span>
           </div>}
+          {loading && <button className="p-3 bg-white rounded-full shadow-lg hover:shadow-xl hover:scale-105 absolute bottom-0 right-0 m-5" onClick={stop}>
+            <FaStop />
+          </button>}
         </div>
         :
         <div className="h-full flex justify-center items-center weight-400 relative text-xl">
