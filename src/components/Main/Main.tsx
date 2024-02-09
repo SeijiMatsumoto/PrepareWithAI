@@ -20,7 +20,7 @@ const Main = () => {
       if (!isLoading) {
         complete(`This is my resume: ${aboutMeInput}
         and this is the job description: ${jdInput}
-        Give me job preparation guide including steps to take, questions on interview, resources. Bold each section heading with <b> tag `)
+        Give me job preparation guide including steps to take, questions on interview, resources. Bold each section heading with <b> tag and links in <a> tags.`)
       } else {
         stop();
       }
