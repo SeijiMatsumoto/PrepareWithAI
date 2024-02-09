@@ -22,7 +22,7 @@ const Details = ({ aboutMeInput, setAboutMeInput, jdInput, setJdInput, submitHan
           input={aboutMeInput}
           setInput={setAboutMeInput}
           title="About Me"
-          placeholder="Enter a few sentences about your own work experience or attach your resume above"
+          placeholder="Enter a few sentences about your own work experience or attach your resume as a PDF above"
           setIsResume={setIsResume}
           invalidInput={invalidInput}
         />
@@ -31,13 +31,14 @@ const Details = ({ aboutMeInput, setAboutMeInput, jdInput, setJdInput, submitHan
           input={jdInput}
           setInput={setJdInput}
           title="Job Description"
-          placeholder="Paste in job description here or import PDF above"
+          placeholder="Enter job description here or import PDF above"
           invalidInput={invalidInput} />
       </div>
       <input
         className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded text-center active:translate-y-0.1 md:mr-10 cursor-pointer"
         type="submit"
-        value={loading ? "Stop" : (message && message.length) ? "Regenerate" : "Generate"} />
+        value={message && message.length && loading ? "Generating" : "Generate"}
+        disabled={loading} />
     </form>
   )
 }

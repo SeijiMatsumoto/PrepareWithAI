@@ -62,7 +62,7 @@ const InputSection = ({ input, setInput, title, placeholder, setIsResume, invali
     <div>
       <h2 className="text-lg font-bold">{title}</h2>
       {!loading && <div className="w-full flex mt-3 text-sm justify-center align-center rounded-lg text-center cursor-pointer transition duration-100 file-uploader">
-        <FileUploader handleChange={handleFileChange} name="file" accept=".pdf" types={fileTypes} multiple={false} label={isMobile ? "Upload your resume here" : "Upload or drop your resume file here"} />
+        <FileUploader handleChange={handleFileChange} name="file" accept=".pdf" types={fileTypes} multiple={false} label={`Upload ${isMobile ? "" : "or drop"} your file here`} />
       </div>}
       <textarea
         className={`mt-3 text-xs w-full h-40 p-4 border rounded-md resize-none mb-5 ${invalidInput && !input?.length ? "border-red-600 border-2 border-solid" : ""}`}
