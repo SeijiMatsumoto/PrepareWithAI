@@ -3,8 +3,9 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 
 const OpenAI = require("openai");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+export const runtime = "edge";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest, res: NextResponse) {
   const { prompt } = await req.json();
 
   try {
