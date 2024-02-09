@@ -23,3 +23,12 @@ describe('Main component', () => {
   });
 
 });
+
+/*
+  Tests to add
+  - form is submitted with only 1 input field filled out
+  - form is submitted with no input fields filled out
+  - on load, message should be empty
+  - after submitHandler is invoked, message should no longer be empty
+*/
+

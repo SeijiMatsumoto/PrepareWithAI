@@ -23,3 +23,13 @@ describe('InputSection component', () => {
     expect(textarea).toBeInTheDocument();
   });
 });
+
+/*
+  Tests to add
+  - press enter to invoke submitHandler
+  - click button to invoke submitHandler
+  - if loading is true, then input value should be Stop
+  - if loading is false
+    - if message exists, then input value should be Regenerate
+    - if message does not exist, then input value should be Generate
+*/
