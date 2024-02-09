@@ -5,11 +5,7 @@ const OpenAI = require("openai");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 export const runtime = "edge";
 
-export async function POST(
-  req: NextRequest
-): Promise<
-  StreamingTextResponse | NextResponse<{ error: { message: string } }> | null
-> {
+export async function POST(req: NextRequest): Promise<any> {
   const { prompt } = await req.json();
 
   try {
@@ -20,7 +16,7 @@ export async function POST(
     });
 
     const stream = OpenAIStream(response);
-    return new StreamingTextResponse(stream);
+    return new StreamingTextResponse(stream, { status: 200 });
   } catch (error) {
     if (error instanceof OpenAIError) {
       console.error(`OpenAI API Error: ${error.message}`);
