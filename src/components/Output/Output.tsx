@@ -2,16 +2,15 @@
 import React, { useRef, useEffect } from 'react'
 import { jsPDF } from 'jspdf';
 import { GridLoader } from 'react-spinners';
-import useIsMobile from '@/hooks/useIsMobile';
 
 type Props = {
   message: string;
   loading: boolean;
+  error?: Error;
 }
 
-const Output = ({ message, loading }: Props) => {
+const Output = ({ message, loading, error }: Props) => {
   const contentRef = useRef<HTMLDivElement>(null);
-  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (loading && contentRef.current) {
@@ -35,7 +34,7 @@ const Output = ({ message, loading }: Props) => {
     })
   };
 
-  message = message.replaceAll("\n", "<br>");
+  message = message ? message.replaceAll("\n", "<br>") : "";
 
   return (
     <div className="flex flex-col w-full md:w-3/5 md:pl-10">
@@ -54,7 +53,7 @@ const Output = ({ message, loading }: Props) => {
             <div className="links" dangerouslySetInnerHTML={{ __html: message }} />
           </div>
           {loading && <div className="flex flex-col items-center mt-5">
-            <GridLoader color="rgb(31 41 55)" size={isMobile ? 10 : 20} />
+            <GridLoader color="rgb(31 41 55)" size={10} />
             <span>Generating with AI...</span>
           </div>}
         </div>
@@ -62,11 +61,13 @@ const Output = ({ message, loading }: Props) => {
         <div className="h-full flex justify-center items-center weight-400 relative text-xl">
           {loading ?
             <div className="flex flex-col items-center mt-5">
-              <GridLoader color="rgb(31 41 55)" size={isMobile ? 10 : 20} />
+              <GridLoader color="rgb(31 41 55)" size={10} />
               <span>Generating with AI...</span>
             </div> :
             <span className="text-center">Fill in details about yourself and the job</span>
           }
+          {error &&
+            <div className="flex flex-col items-center mt-5">Something went wrong. Try again in a few minutes.</div>}
         </div>
       }
     </div>

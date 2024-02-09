@@ -6,7 +6,7 @@ import { useCompletion } from "ai/react";
 import Output from '../Output/Output';
 
 const Main = () => {
-  const { complete, completion: message, isLoading, stop } = useCompletion({
+  const { complete, completion: message, isLoading, stop, error } = useCompletion({
     api: "/api/openai/chat",
   });
   const [aboutMeInput, setAboutMeInput] = useLocalStorage('aboutMe', '');
@@ -15,12 +15,12 @@ const Main = () => {
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!aboutMeInput?.length || !jdInput?.length) {
-      window.alert("Fill out details about yourself and the job!")
+      console.log("Fill out details about yourself and the job!")
     } else {
       if (!isLoading) {
         complete(`This is my resume: ${aboutMeInput}
         and this is the job description: ${jdInput}
-        Give me job preparation guide including steps to take, questions on interview, resources. Bold each section heading with <b> tag and links in <a> tags.`)
+        Give me job preparation guide including information about the company, steps to take to prepare, questions that might get asked interview, questions to ask interviewer, resources. Bold each section heading with <b> tag and links in <a> tags.`)
       } else {
         stop();
       }
@@ -39,7 +39,7 @@ const Main = () => {
         loading={isLoading}
         message={message}
       />
-      <Output message={message} loading={isLoading} />
+      <Output message={message} loading={isLoading} error={error} />
     </div>
   )
 }

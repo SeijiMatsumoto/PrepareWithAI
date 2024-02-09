@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import { pdfjs } from 'react-pdf';
 import { FileUploader } from "react-drag-drop-files";
-import useIsMobile from '@/hooks/useIsMobile';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
@@ -10,16 +9,16 @@ type Props = {
   input: string | null;
   setInput: any;
   title: string;
-  buttonText: string;
   placeholder: string;
 }
 
-const InputSection = ({ input, setInput, title, buttonText, placeholder }: Props) => {
-  const isMobile = useIsMobile();
+const InputSection = ({ input, setInput, title, placeholder }: Props) => {
   const [loading, setLoading] = useState<boolean>(true);
+  const [isMobile, setIsMobile] = useState<boolean>(true);
 
   useEffect(() => {
     setLoading(false);
+    if (window.innerWidth > 768) setIsMobile(false)
   }, [])
 
   const handleFileChange = (file: any) => {
