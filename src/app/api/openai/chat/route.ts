@@ -5,7 +5,11 @@ const OpenAI = require("openai");
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 export const runtime = "edge";
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function POST(
+  req: NextRequest
+): Promise<
+  StreamingTextResponse | NextResponse<{ error: { message: string } }> | null
+> {
   const { prompt } = await req.json();
 
   try {
