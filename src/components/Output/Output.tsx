@@ -64,7 +64,7 @@ const Output = ({ message, loading, error }: Props) => {
               <GridLoader color="rgb(31 41 55)" size={10} />
               <span>Generating with AI...</span>
             </div> :
-            <span className="text-center">Fill in details about yourself and the job</span>
+            <span className="text-center p-10">Fill in details about yourself and the job</span>
           }
           {error &&
             <div className="flex flex-col items-center mt-5">Something went wrong. Try again in a few minutes.</div>}
