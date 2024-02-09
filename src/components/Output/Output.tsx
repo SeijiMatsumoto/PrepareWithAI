@@ -1,5 +1,4 @@
-"use client"
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { jsPDF } from 'jspdf';
 import { GridLoader } from 'react-spinners';
 
