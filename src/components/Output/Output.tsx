@@ -1,4 +1,5 @@
-import React from 'react'
+"use client";
+import React, { useRef, useEffect } from 'react'
 import { jsPDF } from 'jspdf';
 import { GridLoader } from 'react-spinners';
 
@@ -8,13 +9,20 @@ type Props = {
 }
 
 const Output = ({ message, loading }: Props) => {
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (loading && contentRef.current) {
+      contentRef.current.scrollTop = contentRef.current.scrollHeight;
+    }
+  }, [message, loading])
+
   const handleExportPDF = () => {
     var pdf = new jsPDF("p", "mm", "a4");
     const el = document.querySelector("#preparation") as HTMLElement;
 
     pdf.html(el, {
       callback: function (doc) {
-        // Save the PDF
         const date = new Date();
         doc.save(`prepareWithAI_${date.getTime()}.pdf`,);
       },
@@ -39,9 +47,9 @@ const Output = ({ message, loading }: Props) => {
         </button> : null}
       </div>
       {message.length ?
-        <div className="overflow-scroll">
+        <div className="overflow-scroll" ref={contentRef} >
           <div id="preparation">
-            <div dangerouslySetInnerHTML={{ __html: message }} />
+            <div className="links" dangerouslySetInnerHTML={{ __html: message }} />
           </div>
           {loading && <div className="flex flex-col items-center mt-5">
             <GridLoader color="rgb(31 41 55)" />
