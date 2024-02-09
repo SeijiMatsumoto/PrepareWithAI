@@ -25,14 +25,21 @@ const Output = ({ message, loading, error }: Props) => {
     pdf.html(el, {
       callback: function (doc) {
         const date = new Date();
-        doc.save(`prepareWithAI_${date.getTime()}.pdf`,);
+        doc.save(`prepareWithAI_${formatDate(date)}.pdf`,);
       },
-      x: 15,
-      y: 15,
       width: 170,
-      windowWidth: 650
+      windowWidth: 650,
+      margin: 15
     })
   };
+
+  const formatDate = (currentDate: Date) => {
+    const month = currentDate.getMonth() + 1;
+    const day = currentDate.getDate();
+    const year = currentDate.getFullYear();
+    const formattedDate = (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day + '-' + year;
+    return formattedDate;
+  }
 
   message = message ? message.replaceAll("\n", "<br>") : "";
 
