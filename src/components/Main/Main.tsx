@@ -28,7 +28,8 @@ const Main = () => {
   }
 
   return (
-    <div className="flex flex-row justify-between shadow-2xl bg-white rounded-lg p-10 w-full min-h-screen-fit">
+    <div
+      className="flex flex-col w-full shadow-2xl bg-white rounded-lg p-4 min-h-screen-fit overflow-scroll md:justify-between md:p-10 md:flex-row md:overflow-hidden">
       <Details
         aboutMeInput={aboutMeInput}
         setAboutMeInput={setAboutMeInput}

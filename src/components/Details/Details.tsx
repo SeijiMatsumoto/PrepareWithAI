@@ -13,9 +13,9 @@ type Props = {
 
 const Details = ({ aboutMeInput, setAboutMeInput, jdInput, setJdInput, submitHandler, loading, message }: Props) => {
   return (
-    <form className="flex w-2/5 border-r-2 flex-col" onSubmit={(e: FormEvent<HTMLFormElement>) => submitHandler(e)}>
+    <form className="flex w-full flex-col mb-5 pb-5 border-b-2 md:mb-0 md:w-2/5 md:border-r-2 md:border-b-0 md:pb-0" onSubmit={(e: FormEvent<HTMLFormElement>) => submitHandler(e)}>
       <h2 className="text-2xl mb-5 font-bold">Details</h2>
-      <div className="flex flex-col overflow-scroll pr-10 mb-3">
+      <div className="flex flex-col md:overflow-scroll md:pr-10 mb-3">
         <InputSection
           input={aboutMeInput}
           setInput={setAboutMeInput}
@@ -31,7 +31,7 @@ const Details = ({ aboutMeInput, setAboutMeInput, jdInput, setJdInput, submitHan
           placeholder="Paste in job description here or import PDF above" />
       </div>
       <input
-        className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded text-center active:translate-y-0.1 mr-10 cursor-pointer"
+        className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded text-center active:translate-y-0.1 md:mr-10 cursor-pointer"
         type="submit"
         value={loading ? "Stop" : message.length ? "Regenerate" : "Generate"} />
     </form>

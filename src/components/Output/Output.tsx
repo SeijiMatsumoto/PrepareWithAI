@@ -2,6 +2,7 @@
 import React, { useRef, useEffect } from 'react'
 import { jsPDF } from 'jspdf';
 import { GridLoader } from 'react-spinners';
+import useIsMobile from '@/hooks/useIsMobile';
 
 type Props = {
   message: string;
@@ -10,6 +11,7 @@ type Props = {
 
 const Output = ({ message, loading }: Props) => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (loading && contentRef.current) {
@@ -36,9 +38,9 @@ const Output = ({ message, loading }: Props) => {
   message = message.replaceAll("\n", "<br>");
 
   return (
-    <div className="flex flex-col w-3/5 pl-10">
+    <div className="flex flex-col w-full md:w-3/5 md:pl-10">
       <div className="flex justify-between w-full flex-row mb-2">
-        <h2 className="text-2xl mb-5 font-bold">Interview Preparation Guide</h2>
+        <h2 className="text-2xl mb-5 font-bold">Preparation Guide by AI</h2>
         {message.length ? <button
           className="flex flex-row shadow-md rounded-md bg-slate-50 items-center justify-center text-center p-2 transition duration-200 hover:bg-slate-100 cursor-pointer active:bg-slate-200"
           onClick={handleExportPDF}
@@ -52,7 +54,7 @@ const Output = ({ message, loading }: Props) => {
             <div className="links" dangerouslySetInnerHTML={{ __html: message }} />
           </div>
           {loading && <div className="flex flex-col items-center mt-5">
-            <GridLoader color="rgb(31 41 55)" />
+            <GridLoader color="rgb(31 41 55)" size={isMobile ? 10 : 20} />
             <span>Generating with AI...</span>
           </div>}
         </div>
@@ -60,10 +62,10 @@ const Output = ({ message, loading }: Props) => {
         <div className="h-full flex justify-center items-center weight-400 relative text-xl">
           {loading ?
             <div className="flex flex-col items-center mt-5">
-              <GridLoader color="rgb(31 41 55)" />
+              <GridLoader color="rgb(31 41 55)" size={isMobile ? 10 : 20} />
               <span>Generating with AI...</span>
             </div> :
-            <span>Fill in details about yourself and the job</span>
+            <span className="text-center">Fill in details about yourself and the job</span>
           }
         </div>
       }

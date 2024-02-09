@@ -17,7 +17,7 @@
 }
 
 body {
-  height: 100vw;
+  height: 100vh;
   overflow: hidden;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -36,6 +36,12 @@ body {
 
 .min-h-screen-fit {
   max-height: calc(100vh - 150px);
+}
+
+@media screen and (max-width: 768px) {
+  .min-h-screen-fit {
+    max-height: calc(100vh - 100px);
+  }
 }
 
 .file-uploader > label {
