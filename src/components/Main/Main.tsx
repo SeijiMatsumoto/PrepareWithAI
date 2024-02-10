@@ -7,15 +7,14 @@ import Output from '../Output/Output';
 
 const Main = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const { complete, completion: message, isLoading, stop, error } = useCompletion({
-    api: "/api/openai/chat",
-  });
   const [aboutMeInput, setAboutMeInput] = useLocalStorage('aboutMe', '');
   const [jdInput, setJdInput] = useLocalStorage('jobDesc', '');
   const [isResume, setIsResume] = useState<boolean>(false);
   const [invalidInput, setInvalidInput] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(true);
+  const { complete, completion: message, isLoading, stop, error } = useCompletion({
+    api: "/api/openai/chat",
+  });
 
   useEffect(() => {
     if (window.innerWidth > 768) setIsMobile(false)
@@ -50,6 +49,7 @@ const Main = () => {
 
   return (
     <div ref={containerRef}
+      data-testid="main-parent-component"
       className="flex flex-col w-full shadow-2xl bg-white rounded-lg p-4 min-h-screen-fit overflow-scroll md:justify-between md:p-10 md:flex-row md:overflow-hidden">
       <Details
         aboutMeInput={aboutMeInput}
@@ -61,9 +61,13 @@ const Main = () => {
         message={message}
         setIsResume={setIsResume}
         invalidInput={invalidInput}
-
       />
-      <Output message={invalidInput ? "Error: missing input" : message} loading={isLoading} error={error} stop={stop} />
+      <Output
+        message={invalidInput ? "Error: missing input" : message}
+        loading={isLoading}
+        error={error}
+        stop={stop}
+      />
     </div>
   )
 }
