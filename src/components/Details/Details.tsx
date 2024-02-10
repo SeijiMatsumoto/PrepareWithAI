@@ -35,6 +35,7 @@ const Details = ({
           placeholder="Enter a few sentences about your own work experience or attach your resume as a PDF above"
           setIsResume={setIsResume}
           invalidInput={invalidInput}
+          testId="textarea1"
         />
         <hr className="mb-3" />
         <InputSection
@@ -42,7 +43,9 @@ const Details = ({
           setInput={setJdInput}
           title="Job Description"
           placeholder="Enter job description here or import PDF above"
-          invalidInput={invalidInput} />
+          invalidInput={invalidInput}
+          testId="textarea2"
+        />
       </div>
       <input
         className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded text-center active:translate-y-0.1 md:mr-10 cursor-pointer"

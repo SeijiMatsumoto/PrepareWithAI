@@ -12,6 +12,7 @@ type Props = {
   placeholder: string;
   setIsResume?: (isResume: boolean) => void;
   invalidInput: boolean;
+  testId: string;
 }
 
 const InputSection = ({
@@ -20,7 +21,8 @@ const InputSection = ({
   title,
   placeholder,
   setIsResume,
-  invalidInput }: Props) => {
+  invalidInput,
+  testId }: Props) => {
   const [isMobile, setIsMobile] = useState<boolean>(true);
 
   useEffect(() => {
@@ -72,7 +74,7 @@ const InputSection = ({
         placeholder={placeholder}
         value={input || ""}
         onChange={(e: FormEvent<HTMLTextAreaElement>) => { e.preventDefault(); setInput((e.target as HTMLTextAreaElement).value) }}
-        data-testid="textarea"
+        data-testid={testId}
       />
     </div>
   )
