@@ -63,7 +63,8 @@ const Details = ({
       onSubmit={(e: FormEvent<HTMLFormElement>) => submitHandler(e)}>
       <div className="flex flex-row justify-between">
         <h2 className="text-2xl mb-5 font-bold">Details</h2>
-        {collapse ? <FaCaretUp className="relative top-1.5 text-lg" /> : <FaCaretDown className="relative top-1.5 text-lg" />}
+        {collapse && isMobile && <FaCaretUp className="relative top-1.5 text-lg" />}
+        {!collapse && isMobile && <FaCaretDown className="relative top-1.5 text-lg" />}
       </div>
       <div className="flex flex-col md:overflow-scroll mb-3 transition-all duration-300" data-testid="input-wrapper">
         <InputSection

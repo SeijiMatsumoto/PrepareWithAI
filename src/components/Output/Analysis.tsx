@@ -8,12 +8,10 @@ type Props = {
 }
 
 const Analysis = ({ loading, topSkills, analysis }: Props) => {
-
-  console.log(topSkills.length, loading);
   const [skills, setSkills] = useState<string[]>([]);
 
   useEffect(() => {
-    if (topSkills.length) {
+    if (topSkills && topSkills.length) {
       setSkills(topSkills.split(", "));
     }
   }, [topSkills])
@@ -21,7 +19,7 @@ const Analysis = ({ loading, topSkills, analysis }: Props) => {
   return (
     <div className="flex flex-col w-full bg-white shadow-2xl rounded-lg p-4 relative md:h-1/3 mb-5 md:mb-0 md:p-10 md:pl-10 " data-testid="analysis-wrapper">
       <h2 className="text-2xl mb-5 font-bold">Analysis</h2>
-      {topSkills.length && !loading ?
+      {skills.length && !loading ?
         <div className="flex flex-col md:flex-row justify-between h-full w-full overflow-scroll">
           <div className="flex flex-col items-center mb-8 md:mb-0 md:mr-5 md:w-1/3">
             <h2 className="font-bold">Top Skills Match</h2>
