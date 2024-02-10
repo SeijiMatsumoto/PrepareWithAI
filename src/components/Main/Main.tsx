@@ -34,7 +34,6 @@ const Main = () => {
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!aboutMeInput?.length || !jdInput?.length) {
-      console.log("Fill out details about yourself and the job!")
       setInvalidInput(true);
     } else {
       setInvalidInput(false);
@@ -64,7 +63,7 @@ const Main = () => {
         invalidInput={invalidInput}
 
       />
-      <Output message={message} loading={isLoading} error={error} stop={stop} />
+      <Output message={invalidInput ? "Error: missing input" : message} loading={isLoading} error={error} stop={stop} />
     </div>
   )
 }
