@@ -23,7 +23,7 @@ const Analysis = ({ loading, topSkills, analysis }: Props) => {
       <h2 className="text-2xl mb-5 font-bold">Analysis</h2>
       {topSkills.length && !loading ?
         <div className="flex flex-col md:flex-row justify-between h-full w-full overflow-scroll">
-          <div className="flex flex-col items-center md:mr-5 md:w-1/3">
+          <div className="flex flex-col items-center mb-8 md:mb-0 md:mr-5 md:w-1/3">
             <h2 className="font-bold">Top Skills Match</h2>
             <div className="flex flex-row flex-wrap justify-center gap-y-1 md:gap-y-3">
               {skills.map((skill: string) => (
