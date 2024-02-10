@@ -1,35 +1,71 @@
-/* eslint-disable testing-library/prefer-screen-queries */
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Details from '@/components/Details/Details';
-import InputSection from '@/components/Details/InputSection';
 
 const setStateMock = jest.fn();
 const fnMock = jest.fn();
 
 describe('Details component', () => {
   it('renders Details component', () => {
-    render(<Details aboutMeInput={"test"} setAboutMeInput={setStateMock} jdInput={"test"} setJdInput={setStateMock} submitHandler={fnMock} loading={false} message="test" />);
-    expect(screen.getByText('Details')).toBeInTheDocument();
+    const { getByTestId } = render(
+      <Details
+        aboutMeInput={"test"}
+        setAboutMeInput={setStateMock}
+        jdInput={"test"}
+        setJdInput={setStateMock}
+        submitHandler={fnMock}
+        loading={false}
+        message="test"
+        invalidInput={false}
+        setIsResume={setStateMock} />)
+    const formWrapper = getByTestId('main-form')
+    expect(formWrapper).toBeInTheDocument();
   });
-
 });
 
-describe('InputSection component', () => {
-  it('renders InputSection component', async () => {
-    render(<InputSection input="Input" setInput={setStateMock} title="Title" placeholder="Placeholder" />);
-    expect(screen.getByText('Title')).toBeInTheDocument();
+describe('Submit button', () => {
+  const renderComponent = (loading: boolean, message: string) => {
+    return render(
+      <Details
+        aboutMeInput="test"
+        setAboutMeInput={setStateMock}
+        jdInput="test"
+        setJdInput={setStateMock}
+        submitHandler={fnMock}
+        loading={loading}
+        message={message}
+        invalidInput={false}
+        setIsResume={fnMock}
+      />
+    );
+  };
 
-    const textarea = await screen.findByPlaceholderText('Placeholder')
-    expect(textarea).toBeInTheDocument();
+  it('should have value "Generate" if there is no message and it is not loading', () => {
+    const { getByTestId } = renderComponent(false, "");
+    const submitButton = getByTestId('submit-btn') as HTMLInputElement;
+    expect(submitButton.value).toBe('Generate');
   });
-});
 
-/*
-  Tests to add
-  - press enter to invoke submitHandler
-  - click button to invoke submitHandler
-  - if loading is true, then input value should be Stop
-  - if loading is false
-    - if message exists, then input value should be Regenerate
-    - if message does not exist, then input value should be Generate
-*/
+  it('should have value "Generating" if there is a message and it is loading', () => {
+    const { getByTestId } = renderComponent(true, "Message");
+    const submitButton = getByTestId('submit-btn') as HTMLInputElement;
+    expect(submitButton.value).toBe('Generating');
+  });
+
+  it('should have value "Generate" if there is a message, but it is not loading', () => {
+    const { getByTestId } = renderComponent(false, "Message");
+    const submitButton = getByTestId('submit-btn') as HTMLInputElement;
+    expect(submitButton.value).toBe('Generate');
+  });
+
+  it('should be disabled if it is loading', () => {
+    const { getByTestId } = renderComponent(true, "");
+    const submitButton = getByTestId('submit-btn') as HTMLInputElement;
+    expect(submitButton.disabled).toBeTruthy();
+  })
+
+  it('should not be disabled if it is not loading', () => {
+    const { getByTestId } = renderComponent(false, "");
+    const submitButton = getByTestId('submit-btn') as HTMLInputElement;
+    expect(submitButton.disabled).toBeFalsy();
+  })
+});
