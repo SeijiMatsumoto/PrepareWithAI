@@ -14,18 +14,21 @@ type Props = {
   invalidInput: boolean;
 }
 
-const InputSection = ({ input, setInput, title, placeholder, setIsResume, invalidInput }: Props) => {
-  const [loading, setLoading] = useState<boolean>(true);
+const InputSection = ({
+  input,
+  setInput,
+  title,
+  placeholder,
+  setIsResume,
+  invalidInput }: Props) => {
   const [isMobile, setIsMobile] = useState<boolean>(true);
 
   useEffect(() => {
-    setLoading(false);
     if (window.innerWidth > 768) setIsMobile(false)
   }, [])
 
   const handleFileChange = (file: any) => {
     const selectedFile = file;
-
     if (selectedFile) {
       parseTextFromPdf(selectedFile);
     }
@@ -59,16 +62,17 @@ const InputSection = ({ input, setInput, title, placeholder, setIsResume, invali
   const fileTypes = ["PDF"];
 
   return (
-    <div>
+    <div data-testid="input-section-wrapper">
       <h2 className="text-lg font-bold">{title}</h2>
-      {!loading && <div className="w-full flex mt-3 text-sm justify-center align-center rounded-lg text-center cursor-pointer transition duration-100 file-uploader">
+      <div className="w-full flex mt-3 text-sm justify-center align-center rounded-lg text-center cursor-pointer transition duration-100 file-uploader">
         <FileUploader handleChange={handleFileChange} name="file" accept=".pdf" types={fileTypes} multiple={false} label={`Upload ${isMobile ? "" : "or drop"} your file here`} />
-      </div>}
+      </div>
       <textarea
         className={`mt-3 text-xs w-full h-40 p-4 border rounded-md resize-none mb-5 ${invalidInput && !input?.length ? "border-red-600 border-2 border-solid" : ""}`}
         placeholder={placeholder}
         value={input || ""}
         onChange={(e: FormEvent<HTMLTextAreaElement>) => { e.preventDefault(); setInput((e.target as HTMLTextAreaElement).value) }}
+        data-testid="textarea"
       />
     </div>
   )
