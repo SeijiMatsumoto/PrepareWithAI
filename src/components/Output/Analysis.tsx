@@ -27,7 +27,7 @@ const Analysis = ({ loading, topSkills, analysis }: Props) => {
             <h2 className="font-bold">Top Skills Match</h2>
             <div className="flex flex-row flex-wrap justify-center gap-y-1 md:gap-y-3">
               {skills.map((skill: string) => (
-                <div className="p-1 rounded-full shadow-sm mr-1 md:mr-3 bg-slate-400 text-white">{skill}</div>
+                <div key={skill} className="p-1 rounded-full shadow-sm mr-1 md:mr-3 bg-slate-400 text-white">{skill}</div>
               ))}
             </div>
           </div>
