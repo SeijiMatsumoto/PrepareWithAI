@@ -18,7 +18,7 @@ const Main = () => {
 
   useEffect(() => {
     if (window.innerWidth > 768) setIsMobile(false)
-  }, [])
+  }, [isMobile])
 
   useEffect(() => {
     setInvalidInput(false);
