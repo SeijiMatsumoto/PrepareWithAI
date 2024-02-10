@@ -1,7 +1,6 @@
 "use client";
 import React, { useRef, useEffect } from 'react'
 import { jsPDF } from 'jspdf';
-import { GridLoader } from 'react-spinners';
 import { FaStop } from "react-icons/fa6";
 import DOMPurify from "dompurify";
 import { formatDate } from '@/utils/date';
