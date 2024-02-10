@@ -9,12 +9,15 @@ import Analysis from './Analysis';
 
 type Props = {
   message: string;
+  topSkills: string;
+  analysis: string;
   loading: boolean;
+  analysisLoading: boolean;
   error?: Error;
   stop: any;
 }
 
-const Output = ({ message, loading, error, stop }: Props) => {
+const Output = ({ message, topSkills, analysis, loading, analysisLoading, error, stop }: Props) => {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,7 +44,7 @@ const Output = ({ message, loading, error, stop }: Props) => {
 
   return (
     <div className="flex flex-col w-full">
-      <div className="flex flex-col w-full bg-white shadow-2xl rounded-lg p-4 relative mb-5 h-2/3 md:p-10 md:pl-10 " data-testid="output-wrapper">
+      <div className="flex flex-col w-full bg-white shadow-2xl rounded-lg p-4 relative mb-5 md:h-2/3 md:p-10 md:pl-10 " data-testid="output-wrapper">
         <div className="flex justify-between w-full flex-row mb-2">
           <h2 className="text-2xl mb-5 font-bold">Preparation Guide by AI</h2>
           {message.length ? <button
@@ -78,7 +81,7 @@ const Output = ({ message, loading, error, stop }: Props) => {
           </div>
         }
       </div>
-      <Analysis />
+      <Analysis loading={analysisLoading} topSkills={topSkills} analysis={analysis} />
     </div>
   )
 }
