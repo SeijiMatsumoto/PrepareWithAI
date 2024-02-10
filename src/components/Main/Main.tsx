@@ -14,6 +14,7 @@ const Main = () => {
   const [isResume, setIsResume] = useState<boolean>(false);
   const [invalidInput, setInvalidInput] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState<boolean>(true);
+  const [collapse, setCollapse] = useState<boolean>(false);
 
   const { complete: completePrep, completion: message, isLoading: isLoadingPrep, stop: stopPrep, error: errorPrep } = useCompletion({
     api: API_ROUTE,
@@ -49,6 +50,7 @@ const Main = () => {
         getPrep();
         getTopSkills();
         getAnalysis();
+        if (isMobile) setCollapse(true);
       } else {
         stop();
       }
@@ -92,6 +94,9 @@ const Main = () => {
         message={message}
         setIsResume={setIsResume}
         invalidInput={invalidInput}
+        collapse={collapse}
+        setCollapse={setCollapse}
+        isMobile={isMobile}
       />
       <Output
         message={invalidInput ? "Error: missing input" : message}
