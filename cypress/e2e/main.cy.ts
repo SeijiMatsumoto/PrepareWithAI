@@ -16,7 +16,15 @@ describe("PrepareWithAi", () => {
     cy.get("@textarea2").type(jobDescription);
     cy.get("@textarea2").should("have.value", jobDescription);
 
+    cy.contains("span", "Fill in details about yourself and the job").should(
+      "exist"
+    );
+
     cy.get('[data-testid="submit-btn"]').click();
     cy.get('[data-testid="loading-indicator"]').should("exist");
+
+    cy.contains("span", "Fill in details about yourself and the job").should(
+      "not.exist"
+    );
   });
 });
