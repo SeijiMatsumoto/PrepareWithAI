@@ -60,7 +60,7 @@ const Main = () => {
   const getPrep = () => {
     completePrep(`This is my ${isResume ? 'resume' : 'brief description'}: ${aboutMeInput}
         and this is the job description: ${jdInput}
-        Give me job preparation guide including information about the company in the job description, steps to take to prepare, questions that might get asked interview, questions to ask interviewer, resources. Bold each section heading with <b> tag and links in <a> tags.`);
+        Give me job preparation guide including a summary of the job description, steps to take to prepare, questions that might get asked interview, questions to ask interviewer, resources. Bold each section heading with <b> tag and links in <a> tags.`);
   }
 
   const getTopSkills = () => {
