@@ -5,7 +5,7 @@ Preparing for a job interview could be stressful and overwhelming. Let Prepare w
 
 Taking the user's resume and a job description, OpenAI will generate preparation material to help prepare for the interview
 
-
+[Try out Prepare with AI](https://prepare-with-ai.vercel.app)
 
 ## Features
 
@@ -45,6 +45,8 @@ To run this project, you will need to add the following environment variables to
 `OPENAI_API_KEY`
 
 https://platform.openai.com/account/api-keys
+## Lighthouse Audit
+![lighthouse score](https://i.imgur.com/yAbYZht.png)
 ## Run Locally
 
 Clone the project
