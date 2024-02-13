@@ -42,7 +42,7 @@ const Details = ({
         ref.current.style.minHeight = "60px";
         ref.current.style.overflow = "hidden";
       } else {
-        ref.current.style.height = "100%";
+        ref.current.style.height = "";
         ref.current.style.minHeight = "";
         ref.current.style.overflow = "";
       }
